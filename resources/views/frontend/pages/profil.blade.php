@@ -65,13 +65,45 @@
             color: #198754;
             font-weight: bold;
         }
+
+        .hover-scale {
+            transition: all 0.3s ease-in-out;
+        }
+
+        .hover-scale:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .floating-bg {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(0, 123, 255, 0.15), transparent 70%);
+            top: -50px;
+            right: -50px;
+            z-index: 0;
+            animation: float 6s ease-in-out infinite;
+            border-radius: 50%;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(15px);
+            }
+        }
     </style>
 
     {{-- Section Hero --}}
     <section class="text-white text-center animated-gradient" style="padding-top: 140px; padding-bottom: 100px;">
         <div class="container" data-aos="fade-down">
             <h1 class="fw-bold display-4">Profil Sekolah</h1>
-            <p class="lead mb-0">Berita Terkini tentang LAZ Persatuan Islam</p>
         </div>
     </section>
 
@@ -96,7 +128,8 @@
                     {{-- Bagian Bawah --}}
                     <div class="p-4" data-aos="fade-right" data-aos-delay="200">
                         <p class="text-muted" style="text-align: justify;">
-                            <strong>SDN Hambalang 05</strong> merupakan lembaga pendidikan dasar yang berkomitmen mencetak
+                            <strong>SD Negeri Hambalang 05</strong> merupakan lembaga pendidikan dasar yang berkomitmen
+                            mencetak
                             generasi <strong>cerdas</strong>, <strong>berakhlak mulia</strong>, dan <strong>berwawasan
                                 lingkungan</strong>. Sekolah ini menjadi tempat tumbuh kembang siswa melalui pendekatan
                             pembelajaran yang <strong>menyenangkan</strong>, <strong>interaktif</strong>, dan
@@ -221,41 +254,6 @@
         </div>
     </section>
 
-    <style>
-        .hover-scale {
-            transition: all 0.3s ease-in-out;
-        }
-
-        .hover-scale:hover {
-            transform: scale(1.03);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-        }
-
-        .floating-bg {
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(0, 123, 255, 0.15), transparent 70%);
-            top: -50px;
-            right: -50px;
-            z-index: 0;
-            animation: float 6s ease-in-out infinite;
-            border-radius: 50%;
-        }
-
-        @keyframes float {
-
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(15px);
-            }
-        }
-    </style>
-
     <section class="bg-light py-5 position-relative overflow-hidden">
         {{-- Hiasan latar belakang --}}
         <div class="floating-bg"></div>
@@ -274,7 +272,7 @@
                 {{-- Ajak daftar --}}
                 <div class="col-md-5 text-center" data-aos="fade-left" data-aos-delay="300">
                     <h4 class="fw-bold mb-3">Yuk, bergabung bersama kami!</h4>
-                    <a href="#" class="btn btn-primary btn-lg px-5 py-3 rounded-pill shadow-lg transition-all"
+                    <a href="/ppdb" class="btn btn-primary btn-lg px-5 py-3 rounded-pill shadow-lg transition-all"
                         style="transition: all 0.3s ease-in-out;"
                         onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 20px rgba(40,167,69,0.4)'"
                         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow=''">

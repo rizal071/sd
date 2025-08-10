@@ -6,6 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Admin - SD</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Summernote CSS/JS -->
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Summernote CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Summernote JS -->
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+
 
     <style>
         body {
@@ -107,8 +123,8 @@
                 </a>
             </li>
             <li class="nav-item mb-2">
-                <a href="{{ route('admin.siswa') }}"
-                    class="nav-link {{ request()->routeIs('admin.siswa') ? 'active fw-bold' : '' }}">
+                <a href="{{ route('admin.ppdb') }}"
+                    class="nav-link {{ request()->routeIs('admin.ppdb') ? 'active fw-bold' : '' }}">
                     👨‍🏫 Data Siswa
                 </a>
             </li>
@@ -149,35 +165,39 @@
 
         <div class="row">
             <div class="col-md-4 mb-3">
-                <div class="card border-0 shadow text-bg-primary">
-                    <div class="card-body">
-                        <h5>👨‍🎓 Total Siswa</h5>
-                        <p class="fs-4">120</p>
+                <a href="{{ route('admin.ppdb') }}" class="text-decoration-none">
+                    <div class="card border-0 shadow text-bg-primary hover-card">
+                        <div class="card-body text-white">
+                            <h5>👨‍🎓 Siswa</h5>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
             <div class="col-md-4 mb-3">
-                <div class="card border-0 shadow text-bg-success">
-                    <div class="card-body">
-                        <h5>📰 Total Berita</h5>
-                        <p class="fs-4">15</p>
+                <a href="{{ route('admin.berita') }}" class="text-decoration-none">
+                    <div class="card border-0 shadow text-bg-success hover-card">
+                        <div class="card-body text-white">
+                            <h5>📰 Berita</h5>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
             <div class="col-md-4 mb-3">
-                <div class="card border-0 shadow text-bg-warning">
-                    <div class="card-body">
-                        <h5>🖼️ Total Galeri</h5>
-                        <p class="fs-4">60</p>
+                <a href="{{ route('admin.galeri') }}" class="text-decoration-none">
+                    <div class="card border-0 shadow text-bg-warning hover-card">
+                        <div class="card-body text-white">
+                            <h5>🖼️ Galeri</h5>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
-
         {{-- Optional yield section --}}
         @yield('content')
 
     </div>
+
+
 
     <!-- Script Toggle Sidebar -->
     <script>

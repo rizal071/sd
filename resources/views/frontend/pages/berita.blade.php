@@ -23,11 +23,6 @@
             width: 120px;
         }
 
-        /* Card */
-        .card-title {
-            min-height: 3rem;
-        }
-
         .fade-in {
             opacity: 0;
             transform: translateY(20px);
@@ -110,6 +105,56 @@
             pointer-events: none;
             background-color: #f8f9fa;
         }
+
+        .img-zoom {
+            transition: transform 0.5s ease;
+        }
+
+        .img-zoom:hover {
+            transform: scale(1.1);
+        }
+
+        .berita-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .berita-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .berita-card .card-title {
+            transition: color 0.3s;
+        }
+
+        .berita-card:hover .card-title {
+            color: #0d6efd;
+        }
+
+        /* Button */
+        .btn {
+            margin: 15px;
+            font-size: 16px;
+            padding: 6px 14px;
+            color: #0d6efd !important;
+            background-color: white;
+            border: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            text-decoration: none;
+            box-shadow: 0 2px 4px rgba(1, 36, 74, 0.2);
+        }
+
+        .btn:hover {
+            color: white !important;
+            background: linear-gradient(135deg, #3f8efc, #69aaff);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(0, 123, 255, 0.4);
+        }
     </style>
 
 
@@ -122,8 +167,9 @@
         {{-- Search Bar --}}
         <div class="row justify-content-center mb-5 fade-in">
             <div class="col-md-8">
-                <form action="" method="GET" class="search-bar d-flex">
-                    <input type="text" name="q" class="form-control shadow-sm me-2" placeholder="Cari berita...">
+                <form action="{{ route('frontend.berita') }}" method="GET" class="search-bar d-flex">
+                    <input type="text" name="q" class="form-control shadow-sm me-2" placeholder="Cari berita..."
+                        value="{{ request('q') }}">
                     <button type="submit" class="btn btn-primary px-4 shadow-sm d-flex align-items-center gap-2">
                         <i class="bi bi-search"></i>
                         <span>Cari</span>
@@ -132,39 +178,37 @@
             </div>
         </div>
 
-        {{-- Daftar 9 Berita --}}
+
+
+
         <div class="row g-4">
-            @for ($i = 1; $i <= 9; $i++)
-                <div class="col-md-4 fade-in" style="animation-delay: {{ $i * 0.1 }}s;">
-                    <div class="card h-100 shadow-sm border-0">
-                        <img src="{{ asset('assets/images/berita/berita' . $i . '.jpg') }}" class="card-img-top"
-                            alt="Berita {{ $i }}">
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title">Judul Berita {{ $i }}</h5>
-                            <p class="text-muted small">31 Juli 2025 • Admin</p>
-                            <p class="card-text">Ringkasan singkat berita nomor {{ $i }} mengenai kegiatan
-                                penting di sekolah.</p>
-                            <a href="{{ url('/berita/detail') }}" class="btn btn-outline-primary mt-auto">Baca
-                                Selengkapnya</a>
+            @forelse ($beritas as $berita)
+                <div class="col-md-4 fade-in">
+                    <div class="card berita-card h-100 shadow-sm border-0">
+                        <img src="{{ asset('storage/' . $berita->gambar) }}" class="card-img-top"
+                            alt="{{ $berita->judul }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $berita->judul }}</h5>
+                            <p class="text-muted small">
+                                {{ \Carbon\Carbon::parse($berita->tanggal)->translatedFormat('d F Y') }} • Admin</p>
+                            <p class="card-text">{{ \Illuminate\Support\Str::limit(strip_tags($berita->isi), 100) }}</p>
+                        </div>
+                        <div class="d-flex flex-column text-center mt-auto">
+                            <a href="{{ route('frontend.beritashow', $berita->id) }}" class="btn">Baca Selengkapnya</a>
                         </div>
                     </div>
                 </div>
-            @endfor
+            @empty
+                <div class="col-12 text-center text-muted">
+                    <p>Belum ada berita yang ditambahkan.</p>
+                </div>
+            @endforelse
         </div>
-
         {{-- Navigasi Pagination Dummy --}}
         <div class="mt-5">
             <nav>
                 <ul class="pagination justify-content-center custom-pagination">
-                    <li class="page-item disabled">
-                        <a class="page-link">← Sebelumnya</a>
-                    </li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Selanjutnya →</a>
-                    </li>
+                    {{ $beritas->links('pagination::bootstrap-5') }}
                 </ul>
             </nav>
         </div>

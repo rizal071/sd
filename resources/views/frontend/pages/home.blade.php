@@ -57,6 +57,16 @@
             }
         }
 
+        a.btn-warning.transition {
+            transition: all 0.3s ease;
+        }
+
+        a.btn-warning.transition:hover {
+            background-color: #e0a800;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
         /* statistik card */
         .statistik-card:hover {
             transform: translateY(-5px) scale(1.03);
@@ -108,13 +118,15 @@
                             style="background: rgba(0, 0, 0, 0.4);">
                             @if ($i === 0)
                                 <div data-aos="zoom-in" class="p-3">
-                                    <img src="{{ asset('assets/logo-sd.png') }}" alt="Logo SD" style="max-width: 100px;"
-                                        class="mb-3">
+                                    {{-- <img src="{{ asset('assets/logo-sd.png') }}" alt="Logo SD" style="max-width: 100px;"
+                                        class="mb-3"> --}}
                                     <h1 class="fw-bold">Selamat Datang di<br><span class="text-warning">SD Hambalang
                                             05</span></h1>
                                     <p>Sekolah Dasar ramah anak, aktif, dan berprestasi</p>
-                                    <a href="#ppdb" class="btn btn-warning btn-lg mt-3 shadow-sm">
-                                        <i class="bi bi-pencil-square me-1"></i> Daftar Sekarang
+                                    <a href="/ppdb"
+                                        class="btn btn-warning btn-lg mt-3 shadow-sm d-inline-flex align-items-center gap-2 px-4 py-2 rounded-pill transition">
+                                        <i class="bi bi-pencil-square fs-5"></i>
+                                        <span class="fw-semibold">Daftar Sekarang</span>
                                     </a>
                                 </div>
                             @elseif ($i === 1)
@@ -310,62 +322,33 @@
             </div>
 
             <div class="row g-4">
-                <!-- Kartu Berita 1 -->
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-                    <div class="card berita-card h-100 shadow-sm border-0">
-                        <div class="overflow-hidden">
-                            <img src="{{ asset('assets/images/berita/berita1.jpg') }}" class="card-img-top img-zoom"
-                                alt="Berita 1">
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">Upacara HUT RI ke-80</h5>
-                            <p class="text-muted small">31 Juli 2025 • Admin</p>
-                            <p class="card-text">Semua siswa mengikuti upacara dan lomba 17 Agustus dengan semangat dan
-                                antusias.</p>
-                        </div>
-                        <div class="card-footer bg-white border-0">
-                            <a href="#" class="btn btn-sm btn-outline-primary">Baca Selengkapnya</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Kartu Berita 2 -->
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="card berita-card h-100 shadow-sm border-0">
-                        <div class="overflow-hidden">
-                            <img src="{{ asset('assets/images/berita/berita2.jpg') }}" class="card-img-top img-zoom"
-                                alt="Berita 2">
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">Pelatihan Guru Digital</h5>
-                            <p class="text-muted small">25 Juli 2025 • Admin</p>
-                            <p class="card-text">Guru-guru SD mengikuti pelatihan teknologi pendidikan agar pembelajaran
-                                lebih interaktif dan digital-friendly.</p>
-                        </div>
-                        <div class="card-footer bg-white border-0">
-                            <a href="#" class="btn btn-sm btn-outline-primary">Baca Selengkapnya</a>
+                @forelse ($beritas as $index => $berita)
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="{{ ($index + 1) * 100 }}">
+                        <div class="card berita-card h-100 shadow-sm border-0">
+                            <div class="overflow-hidden">
+                                <img src="{{ asset('storage/' . $berita->gambar) }}" class="card-img-top img-zoom"
+                                    alt="{{ $berita->judul }}">
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">{{ $berita->judul }}</h5>
+                                <p class="text-muted small">
+                                    {{ \Carbon\Carbon::parse($berita->tanggal)->translatedFormat('d F Y') }} • Admin
+                                </p>
+                                <p class="card-text">
+                                    {{ \Illuminate\Support\Str::limit(strip_tags($berita->isi), 100) }}
+                                </p>
+                            </div>
+                            <div class="card-footer bg-white border-0">
+                                <a href="{{ route('frontend.beritashow', $berita->id) }}"
+                                    class="btn btn-sm btn-outline-primary">Baca Selengkapnya</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- Kartu Berita 3 -->
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
-                    <div class="card berita-card h-100 shadow-sm border-0">
-                        <div class="overflow-hidden">
-                            <img src="{{ asset('assets/images/berita/berita3.jpg') }}" class="card-img-top img-zoom"
-                                alt="Berita 3">
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">Peresmian Perpustakaan Baru</h5>
-                            <p class="text-muted small">20 Juli 2025 • Admin</p>
-                            <p class="card-text">Kini tersedia ruang baca nyaman dan koleksi buku baru untuk siswa SD
-                                Hambalang 05.</p>
-                        </div>
-                        <div class="card-footer bg-white border-0">
-                            <a href="#" class="btn btn-sm btn-outline-primary">Baca Selengkapnya</a>
-                        </div>
+                @empty
+                    <div class="col-12 text-center">
+                        <p class="text-muted">Belum ada berita yang tersedia.</p>
                     </div>
-                </div>
+                @endforelse
             </div>
 
             <div class="text-center mt-5">

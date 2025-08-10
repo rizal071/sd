@@ -49,19 +49,6 @@
     </style>
 
     {{-- Flash Message --}}
-    @if (session('success'))
-        <script>
-            const toast = new bootstrap.Toast(document.getElementById('successToast'));
-            toast.show();
-        </script>
-    @endif
-
-    @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show mx-3 mt-4" role="alert" id="ppdbAlert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
 
     <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
         <div id="successToast" class="toast align-items-center text-white bg-success border-0" role="alert"
@@ -114,9 +101,21 @@
 
             <div class="fade-up">
                 <p class="contact-info">🛎️ Info: <strong>0812-3456-7890</strong> | 📧 ppdb@sdhambalang05.sch.id</p>
+
+                @if (session('success'))
+                    <div class="alert alert-success alert-dismissible fade show mx-3 mt-4" role="alert" id="ppdbAlert">
+                        {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
             </div>
         </div>
     </div>
+
+
+
+
+
 
     {{-- Modal Form --}}
     <div class="modal fade" id="formPPDBModal" tabindex="-1" aria-labelledby="formPPDBLabel" aria-hidden="true">

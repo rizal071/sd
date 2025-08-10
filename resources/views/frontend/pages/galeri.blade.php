@@ -4,7 +4,6 @@
 
 @section('content')
     <style>
-        /* Heading underline effect */
         .heading-with-line::after {
             content: '';
             position: absolute;
@@ -22,7 +21,6 @@
             width: 120px;
         }
 
-        /* Gallery card style */
         .gallery-card {
             position: relative;
             overflow: hidden;
@@ -47,17 +45,13 @@
 
         .gallery-card .overlay {
             position: absolute;
-            top: 0;
+            bottom: 0;
             left: 0;
             width: 100%;
-            height: 100%;
-            background: linear-gradient(to top, rgba(0, 82, 245, 0.6), transparent);
+            padding: 16px;
+            background: linear-gradient(to top, rgba(0, 82, 245, 0.95), transparent);
             opacity: 0;
             transition: opacity 0.3s ease;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            padding: 15px;
         }
 
         .gallery-card:hover .overlay {
@@ -65,8 +59,8 @@
         }
 
         .overlay-text {
+            text-align: left;
             color: white;
-            text-align: center;
             opacity: 0;
             transform: translateY(20px);
             transition: all 0.3s ease;
@@ -77,7 +71,6 @@
             transform: translateY(0);
         }
 
-        /* Search Bar */
         .search-bar input {
             border-radius: 30px;
             padding-left: 20px;
@@ -87,7 +80,6 @@
             border-radius: 30px;
         }
 
-        /* Pagination */
         .custom-pagination .page-item .page-link {
             border: none;
             color: #0d6efd;
@@ -116,7 +108,6 @@
             background-color: #f8f9fa;
         }
 
-        /* Animation */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -133,6 +124,29 @@
             animation: fadeInUp 0.6s ease forwards;
             opacity: 0;
         }
+
+        /* Overlay Text Styling Final */
+        .gallery-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .gallery-desc {
+            font-size: 0.85rem;
+            margin-bottom: 4px;
+            line-height: 1.3;
+            color: #f0f0f0;
+        }
+
+        .gallery-date {
+            font-size: 0.8rem;
+            color: #fff;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
     </style>
 
     <div class="container" style="margin-top: 120px; margin-bottom: 100px;">
@@ -145,8 +159,9 @@
         <!-- Search Bar -->
         <div class="row justify-content-center mb-5">
             <div class="col-md-8">
-                <form action="" method="GET" class="search-bar d-flex">
-                    <input type="text" name="q" class="form-control shadow-sm me-2" placeholder="Cari galeri...">
+                <form action="{{ route('frontend.galeri') }}" method="GET" class="search-bar d-flex">
+                    <input type="text" name="q" class="form-control shadow-sm me-2" placeholder="Cari galeri..."
+                        value="{{ request('q') }}">
                     <button type="submit" class="btn btn-primary px-4 shadow-sm d-flex align-items-center gap-2">
                         <i class="bi bi-search"></i>
                         <span>Cari</span>
@@ -154,41 +169,46 @@
                 </form>
             </div>
         </div>
+        @if (request('q'))
+            <div class="text-center mb-4">
+                <p class="text-muted">Hasil pencarian untuk: <strong>{{ request('q') }}</strong></p>
+            </div>
+        @endif
 
         <!-- Gallery Grid -->
         <div class="row">
-            @foreach (range(1, 9) as $i)
+            @forelse ($galeris as $i => $galeri)
                 <div class="col-12 col-md-4 mb-4">
                     <div class="card gallery-card border-0 shadow-sm fade-in-card"
-                        style="animation-delay: {{ $i * 0.1 }}s;">
-                        <img src="{{ asset('assets/images/galeri/galeri' . $i . '.jpg') }}"
-                            alt="Galeri {{ $i }}">
+                        style="animation-delay: {{ ($i + 1) * 0.1 }}s;">
+                        <img src="{{ asset('storage/' . $galeri->gambar) }}" alt="{{ $galeri->judul }}">
                         <div class="overlay">
                             <div class="overlay-text">
-                                <h6 class="mb-1">Judul Gambar {{ $i }}</h6>
-                                <small>01 Juli 2025</small>
+                                <div class="gallery-title">{{ $galeri->judul }}</div>
+                                <div class="gallery-desc">
+                                    {{ $galeri->deskripsi ?: 'SD Negeri 05 Hambalang' }}
+                                </div>
+                                <div class="gallery-date">
+                                    <i class="bi bi-calendar3"></i>
+                                    {{ \Carbon\Carbon::parse($galeri->tanggal)->translatedFormat('d F Y') }}
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            @endforeach
-        </div>
+            @empty
+                <div class="col-12 text-center text-muted">
+                    <p>Belum ada foto galeri yang ditambahkan.</p>
+                </div>
+            @endforelse
 
-        <!-- Pagination -->
-        <div class="mt-5">
-            <nav>
-                <ul class="pagination justify-content-center custom-pagination">
-                    <li class="page-item disabled">
-                        <a class="page-link">← Sebelumnya</a>
-                    </li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Selanjutnya →</a>
-                    </li>
-                </ul>
-            </nav>
+            <div class="mt-5">
+                <nav>
+                    <ul class="pagination justify-content-center custom-pagination">
+                        {{ $galeris->links('pagination::bootstrap-5') }}
+                    </ul>
+                </nav>
+            </div>
         </div>
     </div>
 @endsection
